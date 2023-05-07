@@ -1,10 +1,14 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, request, redirect, render_template
 from models import db, connect_db, Pet
+from forms import PetAdoptionForm
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///adopt';
+app.config['SECRET_KEY'] = 'Nedaismywifeforever'
+app.config['WTF_CSRF_INCLUDES_GET'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://shahab:Codingisfun9!@localhost/adopt'
 app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 connect_db(app)
 
@@ -13,15 +17,27 @@ with app.app_context():
 
 
 @app.route('/')
-def show_pets():
-    """Shows a list of pets available"""
+def home_page():
+    """Loads home page with a list of pets"""
 
-    pets = Pet.query.filter(Pet.available == True).all()
-
+    pets = Pet.query.all()
     return render_template('home.html', pets=pets)
 
 
 @app.route('/add', methods=["GET", "POST"])
 def add_pet():
-    """Showing form for adding pets"""
-    return render_template('petform.html')
+    """Loads a form for user to add a pet"""
+    form = PetAdoptionForm()
+    if form.validate_on_submit():
+        name= form.name.data
+        species = form.species.data
+        photo= form.photo.data
+        age = form.age.data
+        notes= form.notes.data
+        pet = Pet(name=name, species=species, photo_url=photo, age=age, notes=notes)
+
+        db.session.add(pet)
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('petform.html', form=form)

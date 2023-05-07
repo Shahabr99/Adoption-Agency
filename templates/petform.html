@@ -1,7 +1,12 @@
-{% extends 'base.html %} {% block title %}Add your pet{% endblock %} {% block
+{% extends 'base.html' %} {% block title %}Add your pet{% endblock %} {% block
 content %}
-<form methods="POST">
-  {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
-  'hidden' %} {% endfor %}
+<h1 class="dispaly-2 text-center">Add a pet</h1>
+<form class="form col-md-5 m-auto" method="POST">
+  {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+  'hidden' %}
+  <div class="mb-3">{{field.label}} {{field(class_="form-control")}}</div>
+  {% endfor %}
+  <a class="btn bg-info" href="/">Cancel</a>
+  <button class="btn bg-success" type="submit ">Add pet</button>
 </form>
 {% endblock %}

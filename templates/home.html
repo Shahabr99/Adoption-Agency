@@ -1,12 +1,15 @@
-{% extends 'base.html' %} {% block title %}List of pets{% endblock %} {% block
+{% extends 'base.html' %}{% block title %}List of pets{% endblock %} {% block
 content %}
-<main class="m-5">
+<main class="m-5 w-90 h-90">
   <h1 class="display-3">List of available pets</h1>
   <div>
     {% for pet in pets if pet.available %}
-    <div>
-      <img src="{{pet.photo_url}}" class="" alt="" />
-      <div>{{pet.name}}:{{pet.available}}</div>
+    <div class="border mb-3">
+      <img class="w-25 h-20" src="{{pet.photo_url}}" class="" alt="" />
+      <p class="display-6">
+        {{pet.name}}:{% if pet.available == true %}Available{% elif
+        pet.available == False %}Unavailable{% endif %}
+      </p>
     </div>
     {% endfor %}
   </div>
