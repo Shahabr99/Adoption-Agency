@@ -2,11 +2,17 @@
 content %}
 <main class="m-5 w-90 h-90">
   <h1 class="display-3">List of available pets</h1>
-  <div>
+  <div class="d-flex p-2">
     {% for pet in pets if pet.available %}
-    <div class="border mb-3">
-      <img class="w-25 h-20" src="{{pet.photo_url}}" class="" alt="" />
-      <p class="display-6">
+    <div class="border">
+      <img
+        class="mx-auto"
+        src="{{pet.photo_url}}"
+        width="250px"
+        height="250px"
+        alt=""
+      />
+      <p class="text-center">
         {{pet.name}}:{% if pet.available == true %}Available{% elif
         pet.available == False %}Unavailable{% endif %}
       </p>
